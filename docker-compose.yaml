@@ -1,0 +1,51 @@
+version: '3'
+
+networks:
+  wordpress_net: #Declarando uma rede
+    driver: bridge #Driver mais utilizado para canal de comunicação,existem outros para poder se utilizar
+
+volumes:
+  mariadb-vol: {} 
+  wordpress_vol: {}
+
+services: #Declarando os conteiners,serviços do compose
+  banco:
+    restart: always
+    container_name: bancodedados
+    image: mariadb #Nome da imagem
+    networks:
+      - wordpress_net #Nome da network
+    volumes:
+      - mariadb_vol:/var/www/html
+    environment: #Variáveis de ambiente
+      - MYSQL_ROOT_PASSWORD: senharootwordpress
+      - MYSQL_DATABASE: wordpress
+      - MYSQL_USER: wordpress
+      - MYSQL_PASSWORD: senhawordpress
+
+  site:
+    container_name: meusite
+    image: wordpress
+    networks:
+      - wordpress_net
+    volumes:
+      - wordpress_vol:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - banco
+    restart: always #restarta a aplicação caso exista algum erro
+    environment:
+      WORDPRESS_DB_HOST: db:3386
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: senhawordpress
+      WORDPRESS_DB_NAME: wordpress
+
+#docker-compose up executa o arquivo
+#docker-container ls lista os conteiners
+#dokcer-compose run nome-do-container executa um container
+#docker container exec -it id-do-container /bin/bash entra dentro container
+#kill 1 quebra a operação dentro container
+#docker-compose run meusite ps -aux 
+#docker-compose down
+#docker-compose config mostra as configurações do compose e seus valores

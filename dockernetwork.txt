@@ -1,0 +1,25 @@
+networks:Bridge,host,none,Overlay,Macvlan
+Bridge:O mais usado,conexão entre diverssos conteiners tendo um dns
+host:Conecta o container a rede local da máquina
+none:nenhuma rede conectada
+Overlay:Quando se trabalha com o docker soap
+Macval:Liga diretamente com endereços de rede,placa de rede fisica
+docker network:Gerencia as redes
+docker network ls:Lista as redes
+docker container run -d nginx:Cria um container da imagem nginx
+dokcer container inspect:Verifica as propriedades do conteiner
+docker container run -it ubuntu /bin/bash:Entra em modo daemon e cria um container ubuntu
+ssh root@Ip_da_máquina  
+apt update && apt install curl --yes:Baixa o curl para acessar o container
+curl http://ip-do-container:Para aceesar um determinado container mesmo que o serviço esteja em outro container
+Os comandos acima são utilizando a rede padrão do docker Bridge
+Criar rede para conectar conteiners especificos pelos seus nomes:
+-docker network create live_net:Cria uma rede
+-docker network ls
+-docker container ls
+-docker network connect live_net nginx:Conceta o container a rede
+-docker network disconnect none nginx:Caso o container esteja com status de rede none
+-docker inspect nginx
+-curl http://ip-do-container
+-curl http://nome-do-container
+-existem diferença entre uma rede criada para ser bridge e uma padrão brigde
